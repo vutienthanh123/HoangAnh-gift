@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Button Love Valentine ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pattaya&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --fg: #ffffff;
+      --pink: #ffd6e7;
+      --heart: #ff2b4f;
+      --shadow: rgba(255, 43, 79, 0.6);
+      --textGlow: 0 0 0.6rem rgba(255, 214, 231, 0.9);
+      --maxWidth: 1200px;
+      --messageBoxBg: rgba(139, 69, 119, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pattaya", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      color: var(--fg);
+      background: linear-gradient(to bottom, #000000, #2a3a6b);
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .scene {
+      position: relative;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .scene[data-bg="stars"] {
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      background-attachment: fixed;
+    }
+
+    .scene[data-bg="stars"]::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 50%, rgba(75, 0, 130, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 85% 30%, rgba(0, 0, 139, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(138, 43, 226, 0.2) 0%, transparent 60%);
+      filter: blur(80px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .scene[data-bg="stars"]::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 40% 10%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 90%, rgba(148, 0, 211, 0.1) 0%, transparent 60%);
+      filter: blur(100px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .stars-container {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      animation: starTwinkle var(--duration) ease-in-out infinite;
+      box-shadow: 0 0 3px #fff;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .star-cross {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 4px 1px #fff;
+      animation: starTwinkle var(--duration) ease-in-out infinite;
+    }
+
+    .star-cross::before, .star-cross::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 1px;
+    }
+
+    .star-cross::before { width: 12px; height: 1px; }
+    .star-cross::after { width: 1px; height: 12px; }
+
+    .shooting-star {
+      position: absolute;
+      width: 180px;
+      height: 4px;
+      background: linear-gradient(to left, #fff, rgba(255, 255, 255, 0.1), transparent);
+      clip-path: polygon(0% 0%, 0% 100%, 100% 50%);
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+      animation: shooting var(--duration) linear forwards;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transform-origin: right center;
+    }
+
+    .shooting-star::before {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 15px 4px #fff, 0 0 30px 8px rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes shooting {
+      0% { transform: translate(0, 0) rotate(var(--angle)); opacity: 0; }
+      5% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translate(var(--move-x), var(--move-y)) rotate(var(--angle)); opacity: 0; }
+    }
+
+    .heart-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateY(-40px);
+    }
+
+    @media (min-height: 800px) {
+      .heart-container { transform: translateY(0); }
+    }
+
+    .heart-btn {
+      display: grid;
+      place-items: center;
+      width: clamp(280px, 40vmin, 520px);
+      height: clamp(280px, 40vmin, 520px);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      filter: drop-shadow(0 0 40px rgba(255, 43, 79, 0.55));
+      transition: transform 0.1s ease;
+      z-index: 2;
+    }
+
+    .heart-btn:active { transform: scale(0.95); }
+    .heart { width: 85%; height: 85%; display: block; transform-origin: center center; will-change: transform; }
+    .heart svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    
+    .heart svg .core {
+      fill: var(--heart);
+      filter: drop-shadow(0 0 20px var(--shadow)) drop-shadow(0 0 40px rgba(255, 43, 79, 0.4));
+      animation: gentleBeat 2.5s ease-in-out infinite;
+      transform-origin: 50% 50%;
+    }
+
+    .heart svg .shine { fill: rgba(255, 255, 255, 0.35); mix-blend-mode: screen; }
+
+    @keyframes gentleBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .heart-btn.clicked .heart svg .core {
+      animation: strongBeat 0.7s cubic-bezier(0.17, 0.67, 0.83, 0.67), gentleBeat 2.5s ease-in-out infinite 0.7s;
+    }
+
+    @keyframes strongBeat {
+      0% { transform: scale(1); }
+      15% { transform: scale(1.8); }
+      30% { transform: scale(0.6); }
+      45% { transform: scale(1.6); }
+      60% { transform: scale(0.7); }
+      75% { transform: scale(1.3); }
+      90% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
+    .phrase {
+      position: absolute;
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.5);
+      font-weight: 700;
+      color: var(--pink);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-size: clamp(16px, 2.8vw, 24px);
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1);
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      will-change: transform, opacity;
+    }
+
+    .phrase.shooting {
+      animation: shootAndFall var(--duration, 6s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* ĐOẠN HIỆU ỨNG ĐÃ ĐƯỢC SỬA LỖI CÚ PHÁP TẠI ĐÂY */
+    @keyframes shootAndFall {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(var(--rotation, 0deg)); }
+      15% { opacity: 1; transform: translate(calc(-50% + var(--shoot-x)), calc(-50% + var(--shoot-y))) scale(1.1) rotate(var(--rotation, 0deg)); }
+      25% { transform: translate(calc(-50% + var(--shoot-x)), calc(-50% + var(--shoot-y))) scale(1) rotate(var(--rotation, 0deg)); }
+      85% { opacity: 1; transform: translate(calc(-50% + var(--final-x)), calc(-50% + var(--final-y))) scale(1) rotate(var(--final-rotation, 0deg)); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--final-x)), calc(-50% + var(--final-y) + 20px)) scale(0.8) rotate(var(--final-rotation, 0deg)); }
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--heart);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    .particle.burst { animation: particleBurst 1s ease-out forwards; }
+
+    @keyframes particleBurst {
+      0% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(0) translate(var(--particle-x, 0px), var(--particle-y, 0px)); }
+    }
+
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--messageBoxBg);
+      padding: 10px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 214, 231, 0.3);
+      box-shadow: 0 8px 32px rgba(255, 43, 79, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      min-width: 260px;
+      opacity: 0;
+      transform: translateX(-50%) translateY(100%);
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .music-player.active { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .music-player.minimized { transform: translateX(-50%) translateY(calc(100% + 20px)); }
+
+    .toggle-btn {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--messageBoxBg);
+      border: 1px solid rgba(255, 214, 231, 0.3);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--pink);
+      z-index: 101;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle-btn:hover { background: rgba(139, 69, 119, 0.8); transform: translateX(-50%) translateY(-2px); }
+    .toggle-btn svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.4s ease; }
+    .music-player.minimized .toggle-btn { top: -30px; background: var(--messageBoxBg); border-radius: 15px 15px 0 0; width: 40px; height: 30px; }
+    .music-player.minimized .toggle-btn svg { transform: rotate(180deg); }
+
+    .play-pause-btn {
+      background: rgba(255, 43, 79, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 43, 79, 0.3);
+    }
+
+    .play-pause-btn:hover { background: rgba(255, 43, 79, 1); transform: scale(1.05); }
+    .play-pause-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .progress-container { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .song-info { font-size: 13px; color: var(--pink); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); font-weight: 500; }
+    .progress-bar { width: 100%; height: 3px; background: rgba(255, 255, 255, 0.2); border-radius: 2px; overflow: hidden; cursor: pointer; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #ff2b4f, #ff5f7a); border-radius: 2px; width: 0%; transition: width 0.1s ease; }
+    .time-display { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255, 214, 231, 0.8); font-weight: 400; }
+  </style>
+</head>
+
+<body>
+  <div class="scene" id="scene" data-bg="stars">
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="heart-container">
+      <button class="heart-btn" id="heartBtn">
+        <span class="heart">
+          <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="g" cx="50%" cy="40%" r="70%">
+                <stop offset="0%" stop-color="#ff5f7a" />
+                <stop offset="40%" stop-color="#ff2b4f" />
+                <stop offset="100%" stop-color="#c91534" />
+              </radialGradient>
+            </defs>
+            <path class="core"
+              d="M100,162.2C17.7,99.5,6,77.5,6,52.3C6,27.1,27.1,6,52.3,6c15.4,0,30.8,7.7,40,20.6l7.7,9.6l7.7-9.6 c9.2-12.9,24.6-20.6,40-20.6c25.2,0,46.3,21.1,46.3,46.3c0,25.2-11.7,47.2-94,109.9L100,162.2L100,162.2z"
+              fill="url(#g)" />
+            <path class="shine"
+              d="M73 47c-12 0-23 6-29 16-2 3-1 7 2 9 3 2 7 1 9-2 4-7 12-11 20-11 4 0 7-3 7-7s-3-5-9-5Z" />
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="music-player" id="musicPlayer">
+      <button class="toggle-btn" id="toggleBtn" aria-label="Toggle Music Player">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="toggleIcon">
+          <path d="M7 10l5 5 5-5z" />
+        </svg>
+      </button>
+      <button class="play-pause-btn" id="playPauseBtn">
+        <svg id="playIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+        <svg id="pauseIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display: none">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+      </button>
+      <div class="progress-container">
+        <div class="song-info">Số 1 thế giới 💖</div>
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="time-display">
+          <span id="currentTime">0:00</span>
+          <span id="totalTime">0:00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="audioPlayer" loop>
+    <source src="so1thegioi.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const PHRASES = [
+      "Chúc khủng long 'nhỏ' của gà con mau ăn-chóng lớn và ngoan ngoãn nhée, Luôn vui vẻ, nở nụ cười trên môi và đặc biệt là không được tiêu cực ạ.",
+      "Chúc em ngày càng xinh xắn, dễ thương, mong em có tất cả trừ vất vả.",
+      "Chúc em sẽ học được trường đại học mà em mong muốn nhóe khủng long 'nhỏ'.",
+      "Quốc tế thiếu nhi vui vẻ ❤️",
+      "Chúc em luôn cười thật tươi 🌟💖",
+      "Chúc khủng long 'nhỏ' luôn iu đời nhất là iu bản thân mình"
+    ];
+
+    const scene = document.getElementById("scene");
+    const heartBtn = document.getElementById("heartBtn");
+    const musicPlayer = document.getElementById("musicPlayer");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const progressBar = document.getElementById("progressBar");
+    const progressFill = document.getElementById("progressFill");
+    const currentTimeEl = document.getElementById("currentTime");
+    const totalTimeEl = document.getElementById("totalTime");
+    const playIcon = document.getElementById("playIcon");
+    const pauseIcon = document.getElementById("pauseIcon");
+    const toggleBtn = document.getElementById("toggleBtn");
+
+    let isProcessing = false;
+    let firstClick = true;
+    let isPlaying = false;
+
+    function triggerRelease(e) {
+      if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      if (isProcessing) return;
+      isProcessing = true;
+
+      if (firstClick) {
+        activateMusic();
+        firstClick = false;
+      }
+      releasePhrase();
+      setTimeout(() => { isProcessing = false; }, 300);
+    }
+
+    function activateMusic() {
+      musicPlayer.classList.add("active");
+      audioPlayer.play()
+        .then(() => { isPlaying = true; showPauseIcon(); })
+        .catch((e) => { console.log("Lỗi phát tự động:", e); });
+    }
+
+    function showPlayIcon() { playIcon.style.display = "block"; pauseIcon.style.display = "none"; }
+    function showPauseIcon() { playIcon.style.display = "none"; pauseIcon.style.display = "block"; }
+
+    function togglePlayPause() {
+      if (isPlaying) {
+        audioPlayer.pause();
+        showPlayIcon();
+        isPlaying = false;
+      } else {
+        audioPlayer.play()
+          .then(() => { showPauseIcon(); isPlaying = true; })
+          .catch((e) => { console.log("Lỗi phát audio:", e); });
+      }
+    }
+
+    function updateProgress() {
+      if (audioPlayer.duration) {
+        const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+        progressFill.style.width = progress + "%";
+        currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+        totalTimeEl.textContent = formatTime(audioPlayer.duration);
+      }
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return mins + ":" + (secs < 10 ? "0" : "") + secs;
+    }
+
+    function seekAudio(e) {
+      const rect = progressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const newTime = (clickX / rect.width) * audioPlayer.duration;
+      audioPlayer.currentTime = newTime;
+    }
+
+    heartBtn.addEventListener("click", triggerRelease);
+    heartBtn.addEventListener("keydown", triggerRelease);
+    playPauseBtn.addEventListener("click", togglePlayPause);
+    progressBar.addEventListener("click", seekAudio);
+    audioPlayer.addEventListener("timeupdate", updateProgress);
+    audioPlayer.addEventListener("loadedmetadata", updateProgress);
+    toggleBtn.addEventListener("click", () => { musicPlayer.classList.toggle("minimized"); });
+
+    function releasePhrase() {
+      heartBtn.classList.add("clicked");
+      setTimeout(() => heartBtn.classList.remove("clicked"), 700);
+      createParticlesBurst();
+      createPhrase();
+    }
+
+    function createPhrase() {
+      const phraseText = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+      const el = document.createElement("div");
+      el.className = "phrase shooting";
+      el.textContent = phraseText;
+
+      const colors = [
+        "linear-gradient(135deg, rgba(255, 182, 193, 0.9), rgba(139, 69, 119, 0.95))",
+        "linear-gradient(135deg, rgba(147, 112, 219, 0.9), rgba(75, 0, 130, 0.95))",
+        "linear-gradient(135deg, rgba(255, 105, 180, 0.9), rgba(199, 21, 133, 0.95))",
+        "linear-gradient(135deg, rgba(255, 192, 203, 0.9), rgba(219, 112, 147, 0.95))"
+      ];
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+      const heartRect = heartBtn.getBoundingClientRect();
+      const sceneRect = scene.getBoundingClientRect();
+      const startX = heartRect.left + heartRect.width / 2 - sceneRect.left;
+      const startY = heartRect.top + heartRect.height / 2 - sceneRect.top;
+
+      el.style.left = startX + "px";
+      el.style.top = startY + "px";
+
+      const angle = Math.random() * 120 - 150;
+      const shootForce = rand(150, 230);
+      const shootX = Math.cos((angle * Math.PI) / 180) * shootForce;
+      const shootY = Math.sin((angle * Math.PI) / 180) * shootForce;
+      const fallDistance = rand(250, 450);
+      const horizontalDrift = rand(-120, 120);
+      const finalX = shootX + horizontalDrift;
+      const finalY = shootY + fallDistance;
+      const initialRotation = rand(-20, 20);
+      const finalRotation = initialRotation + rand(-40, 40);
+      const duration = rand(4.5, 6.5);
+
+      el.style.setProperty("--shoot-x", shootX + "px");
+      el.style.setProperty("--shoot-y", shootY + "px");
+      el.style.setProperty("--final-x", finalX + "px");
+      el.style.setProperty("--final-y", finalY + "px");
+      el.style.setProperty("--rotation", initialRotation + "deg");
+      el.style.setProperty("--final-rotation", finalRotation + "deg");
+      el.style.setProperty("--duration", duration + "s");
+
+      scene.appendChild(el);
+      el.addEventListener("animationend", () => el.remove(), { once: true });
+    }
+
+    function createParticlesBurst() {
+      const heartRect = heartBtn.getBoundingClientRect();
+      const sceneRect = scene.getBoundingClientRect();
+      const centerX = heartRect.left + heartRect.width / 2 - sceneRect.left;
+      const centerY = heartRect.top + heartRect.height / 2 - sceneRect.top;
+      const particleCount = rand(10, 15);
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle burst";
+        particle.style.left = centerX + "px";
+        particle.style.top = centerY + "px";
+
+        const angle = Math.random() * 360;
+        const distance = rand(50, 90);
+        const x = Math.cos((angle * Math.PI) / 180) * distance;
+        const y = Math.sin((angle * Math.PI) / 180) * distance;
+
+        particle.style.setProperty("--particle-x", x + "px");
+        particle.style.setProperty("--particle-y", y + "px");
+        scene.appendChild(particle);
+        particle.addEventListener("animationend", () => particle.remove(), { once: true });
+      }
+    }
+
+    const starsContainer = document.getElementById("starsContainer");
+
+    function initGalaxy() {
+      const starCount = 150;
+      const crossStarCount = 20;
+      for (let i = 0; i < starCount; i++) createStar("star");
+      for (let i = 0; i < crossStarCount; i++) createStar("star-cross");
+      setInterval(createShootingStar, 3000);
+    }
+
+    function createStar(className) {
+      const star = document.createElement("div");
+      star.className = className;
+      const size = Math.random() * 2 + 1;
+      if (className === "star") {
+        star.style.width = size + "px";
+        star.style.height = size + "px";
+      }
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.setProperty("--duration", Math.random() * 3 + 2 + "s");
+      star.style.animationDelay = Math.random() * 5 + "s";
+      starsContainer.appendChild(star);
+    }
+
+    function createShootingStar() {
+      const star = document.createElement("div");
+      star.className = "shooting-star";
+      const startX = rand(-10, 30) + "%";
+      const startY = rand(-10, 40) + "%";
+      star.style.left = startX;
+      star.style.top = startY;
+
+      const angle = rand(20, 45);
+      const duration = rand(1.2, 2.2) + "s";
+      const distance = window.innerWidth + 500;
+      const moveX = Math.cos(angle * Math.PI / 180) * distance + "px";
+      const moveY = Math.sin(angle * Math.PI / 180) * distance + "px";
+
+      star.style.setProperty("--angle", angle + "deg");
+      star.style.setProperty("--duration", duration);
+      star.style.setProperty("--move-x", moveX);
+      star.style.setProperty("--move-y", moveY);
+
+      starsContainer.appendChild(star);
+      star.addEventListener("animationend", () => { star.remove(); }, { once: true });
+    }
+
+    initGalaxy();
+    setInterval(createShootingStar, 3500);
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+  </script>
+</body>
+
+</html>
